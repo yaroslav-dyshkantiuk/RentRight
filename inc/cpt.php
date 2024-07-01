@@ -117,22 +117,22 @@ if(!class_exists('RentRightCpt')){
         }
 
         public function custom_post_type(){
-            register_post_type('property', 
+            register_post_type('property',
             array(
                 'public' => true,
                 'has_archive' => true,
-                'rewrite' => array('slug' => 'properties'),
-                'label' => 'Property',
-                'supports' => array('title', 'editor', 'thumbnail'),
+                'rewrite' => ['slug'=>'properties'],
+                'label' => esc_html__('Property','rentright'),
+                'supports' => array('title','editor','thumbnail'),
             ));
-            register_post_type('agent', 
+            register_post_type('agent',
             array(
                 'public' => true,
                 'has_archive' => true,
-                'rewrite' => array('slug' => 'properties'),
-                'label' => 'Agents',
-                'supports' => array('title', 'editor', 'thumbnail'),
-                'show_in_rest' => true,
+                'rewrite' => ['slug'=>'agents'],
+                'label' => esc_html__('Agents','rentright'),
+                'supports' => array('title','editor','thumbnail'),
+                'show_in_rest' =>true
             ));
 
             $labels = array(
