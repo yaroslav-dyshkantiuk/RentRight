@@ -1,75 +1,95 @@
 <?php
 get_header(); ?>
 
+<?php $rentRight_Template->get_template_part('partials/filter');; ?>
+
 <div class="wrapper archive_property">
     <?php 
-    
-    if ( have_posts() ) {
 
-        // Load posts loop.
-        while ( have_posts() ) {
-            the_post(); ?>
-            <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-                <?php if(get_the_post_thumbnail(get_the_ID(),'large')) {
-                    echo get_the_post_thumbnail(get_the_ID(),'large');
-                } ?>
 
-                <?php 
 
-                //Price
-                $price = esc_html(get_post_meta(get_the_ID(),'rentright_price', true));
-                
-                //Location
-                $ale_location = '';
-                $locations = get_the_terms(get_the_ID(),'location');
+    if(!empty($_POST['submit'])){
+        
+        $args = array(
+            'post_type'=>'property',
+            'posts_per_page' => -1,
+            'meta_query' => array('relation'=>'AND'),
+            'tax_query' => array('relation'=>'AND'),
+        );
 
-                foreach($locations as $location){
-                    $ale_location.= " ".$location->name;
-                }
+        if(isset($_POST['rentright_type']) && $_POST['rentright_type'] !=''){
+            array_push($args['meta_query'],array(
+                'key' => 'rentright_type',
+                'value' => esc_attr($_POST['rentright_type']),
+            ));
+        }
 
-                //Agents
-                $agent_id = get_post_meta(get_the_ID(),'rentright_agent', true);
-                $agent = get_post($agent_id);
-                
-                ?>
+        if(isset($_POST['rentright_price']) && $_POST['rentright_price'] !=''){
+            array_push($args['meta_query'],array(
+                'key' => 'rentright_price',
+                'value' => esc_attr($_POST['rentright_price']),
+                'type' => 'numeric',
+                'compare' => '<=',
+            ));
+        }
 
-                <h2><?php the_title(); ?></h2>
-                <div class="description"><?php the_excerpt(); ?></div>
-                <div class="property_info">
-                    <span class="location"><?php esc_html_e('Location:','rentright'); 
-                    
-                    echo esc_html($ale_location);
+        if(isset($_POST['rentright_agent']) && $_POST['rentright_agent'] !=''){
+            array_push($args['meta_query'],array(
+                'key' => 'rentright_agent',
+                'value' => esc_attr($_POST['rentright_agent']),
+            ));
+        }
 
-                    ?> </span>
-                    <span class="type"><?php esc_html_e('Type:','rentright'); 
-                    $types = get_the_terms(get_the_ID(),'property-type');
+        if(isset($_POST['rentright_property-type']) && $_POST['rentright_property-type'] != ''){
+            array_push($args['tax_query'],array(
+                'taxonomy' => 'property-type',
+                'terms' => $_POST['rentright_property-type'],
+            ));
+        }
 
-                    foreach($types as $type){
-                        echo " ".esc_html($type->name);
-                    }
-                    ?> </span>
+        if(isset($_POST['rentright_location']) && $_POST['rentright_location'] != ''){
+            array_push($args['tax_query'],array(
+                'taxonomy' => 'location',
+                'terms' => $_POST['rentright_location'],
+            ));
+        }
 
-                    <span class="price"><?php esc_html_e('Price:','rentright'); echo ' '.$price;?> </span>
+        $properties = new WP_Query($args);
 
-                    <span class="offer"><?php esc_html_e('Offer:','rentright'); echo ' '.esc_html(get_post_meta(get_the_ID(),'rentright_type', true));?> </span>
-                    <span class="agent"><?php esc_html_e('Agent:','rentright'); 
-                    
-                    echo " ".esc_html($agent->post_title);
-                    ?> </span>
-                </div>
-                <a href="<?php the_permalink(); ?>">Open This Property</a>
-            </article>
-        <?php }
-    
-    //Pagination
-    posts_nav_link();
-    
+        if ( $properties->have_posts() ) {
+
+            // Load posts loop.
+            while ( $properties->have_posts() ) {
+                $properties->the_post(); 
+            
+                $rentRight_Template->get_template_part('partials/content');
+            
+            }
+        } else {
+            echo '<p>'.esc_html__('No Properties','rentright').'</p>';
+        }
+
     } else {
-        echo '<p>'.esc_html__('No Properties','rentright').'</p>';
-    }
 
+        if ( have_posts() ) {
+
+            // Load posts loop.
+            while ( have_posts() ) {
+                the_post(); 
+            
+                $rentRight_Template->get_template_part('partials/content');
+            
+            }
+        
+        //Pagination
+        posts_nav_link();
+
+        
+        } else {
+            echo '<p>'.esc_html__('No Properties','rentright').'</p>';
+        }
+    }
     ?>
-    
 </div>
 
 <?php
