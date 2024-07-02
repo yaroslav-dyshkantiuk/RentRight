@@ -18,8 +18,12 @@ if(!defined('ABSPATH')){
 define('RENTRIGHT_PATH',plugin_dir_path(__FILE__));
 
 if(!class_exists('RentRightCpt')){
-    require RENTRIGHT_PATH . '/inc/cpt.php';
+    require RENTRIGHT_PATH . '/inc/class-rentrightcpt.php';
 }
+if(!class_exists('Gamajo_Template_Loader')){
+    require RENTRIGHT_PATH . 'inc/class-gamajo-template-loader.php';
+}
+require RENTRIGHT_PATH . '/inc/class-rentright-template-loader.php';
 
 class RentRight{
 
