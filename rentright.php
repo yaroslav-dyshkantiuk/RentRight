@@ -26,6 +26,7 @@ if(!class_exists('Gamajo_Template_Loader')){
 require RENTRIGHT_PATH . '/inc/class-rentright-template-loader.php';
 require RENTRIGHT_PATH . '/inc/class-rentright-shortcodes.php';
 require RENTRIGHT_PATH . '/inc/class-rentright-filter-widget.php';
+require RENTRIGHT_PATH . '/inc/class-rentright-elementor.php';
 
 class RentRight{
 
