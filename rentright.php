@@ -36,6 +36,32 @@ class RentRight{
 
         add_action('plugins_loaded',[$this,'load_text_domain']);
         add_action('widgets_init',[$this,'register_widget']);
+        add_action('admin_menu',[$this,'add_menu_item']);
+        add_filter('plugin_action_links_'.plugin_basename(__FILE__),[$this,'add_plugin_setting_link']);
+    }
+
+    public function add_plugin_setting_link($link){
+
+        $rentright_link = '<a href="admin.php?page=rentright_settings">'.esc_html__('Settings Page','rentright').'</a>';
+        array_push($link,$rentright_link);
+
+        return $link;
+    }
+
+    public function add_menu_item(){
+        add_menu_page(
+            esc_html__('RentRight Settings Page','rentright'),
+            esc_html__('RentRight','rentright'),
+            'manage_options',
+            'rentright_settings',
+            [$this,'main_admin_page'],
+            'dashicons-admin-plugins',
+            100,
+        );
+    }
+
+    public function main_admin_page(){
+        require_once RENTRIGHT_PATH .'admin/welcome.php';
     }
 
     public function register_widget(){
