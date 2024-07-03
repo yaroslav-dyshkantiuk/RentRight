@@ -25,6 +25,7 @@ if(!class_exists('Gamajo_Template_Loader')){
 }
 require RENTRIGHT_PATH . '/inc/class-rentright-template-loader.php';
 require RENTRIGHT_PATH . '/inc/class-rentright-shortcodes.php';
+require RENTRIGHT_PATH . '/inc/class-rentright-filter-widget.php';
 
 class RentRight{
 
@@ -33,6 +34,11 @@ class RentRight{
         add_action('wp_enqueue_scripts', [$this,'enqueue_front']);
 
         add_action('plugins_loaded',[$this,'load_text_domain']);
+        add_action('widgets_init',[$this,'register_widget']);
+    }
+
+    public function register_widget(){
+        register_widget('rentright_filter_widget');
     }
 
     public function get_terms_hierarchical($tax_name,$current_term){
