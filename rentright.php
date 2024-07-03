@@ -38,6 +38,39 @@ class RentRight{
         add_action('widgets_init',[$this,'register_widget']);
         add_action('admin_menu',[$this,'add_menu_item']);
         add_filter('plugin_action_links_'.plugin_basename(__FILE__),[$this,'add_plugin_setting_link']);
+        add_action('admin_init',[$this, 'settings_init']);
+    }
+
+    public function settings_init(){
+
+        register_setting('rentright_settings','rentright_settings_options');
+
+        add_settings_section('rentright_settings_section', esc_html__('Settings','rentright'), [$this,'rentright_settings_section_html'],'rentright_settings');
+
+        add_settings_field('filter_title', esc_html__('Title for Filter','rentright'), [$this,'filter_title_html'],'rentright_settings','rentright_settings_section');
+        add_settings_field('archive_title', esc_html__('Title for Archive Page','rentright'), [$this,'archive_title_html'],'rentright_settings','rentright_settings_section');
+    }
+
+    public function rentright_settings_section_html(){
+        esc_html_e('Settings for RentRight Plugin');
+    }
+
+    public function filter_title_html(){
+
+        $options = get_option('rentright_settings_options');
+
+        ?>
+        <input type="text" name="rentright_settings_options[filter_title]" value="<?php echo isset($options['filter_title']) ? $options['filter_title'] : "";  ?>" />
+        <?php
+    }
+
+    public function archive_title_html(){
+
+        $options = get_option('rentright_settings_options');
+
+        ?>
+        <input type="text" name="rentright_settings_options[archive_title]" value="<?php echo isset($options['archive_title']) ? $options['archive_title'] : "";  ?>" />
+        <?php
     }
 
     public function add_plugin_setting_link($link){

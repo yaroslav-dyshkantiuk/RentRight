@@ -1,5 +1,11 @@
 <div class="wrapper filter-form">
-    <?php $rentRight = new RentRight(); ?>
+    <?php 
+        $rentRight = new RentRight(); 
+        $options = get_option('rentright_settings_options');
+        
+        if(isset($options['filter_title'])){ echo esc_html($options['filter_title']); }
+    ?>
+    
     <form action="<?php get_post_type_archive_link('property'); ?>" method="post">
         <select name="rentright_location">
             <option value="">Select Location</option>
