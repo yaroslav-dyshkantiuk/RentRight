@@ -27,6 +27,7 @@ require RENTRIGHT_PATH . '/inc/class-rentright-template-loader.php';
 require RENTRIGHT_PATH . '/inc/class-rentright-shortcodes.php';
 require RENTRIGHT_PATH . '/inc/class-rentright-filter-widget.php';
 require RENTRIGHT_PATH . '/inc/class-rentright-elementor.php';
+require RENTRIGHT_PATH . '/inc/class-rentright-bookingform.php';
 
 class RentRight{
 

@@ -31,6 +31,8 @@ get_header(); ?>
                 //Agents
                 $agent_id = get_post_meta(get_the_ID(),'rentright_agent', true);
                 $agent = get_post($agent_id);
+
+                echo do_shortcode('[rentright_booking agent="'.esc_html($agent->post_title).'" location="'.esc_html($ale_location).'" price="'.esc_html($price).'"]');
                 
                 ?>
 
@@ -66,6 +68,7 @@ get_header(); ?>
     ?>
     
 </div>
+<img src="url(&quot;chrome://theme/IDR_PROFILE_AVATAR_33@1x&quot;)" alt="">
 
 <?php
 get_footer();
